@@ -3,7 +3,6 @@ package models
 import "time"
 
 type TaskPayload struct {
-	Task_id        string    `json:"task_id" bson:"task_id"`
 	Title          string    `json:"title" binding:"required" bson:"title"`
 	Desc           string    `json:"desc" bson:"desc"`
 	TimestampBegin time.Time `json:"timestampBegin" binding:"required" bson:"TimestampBegin"`

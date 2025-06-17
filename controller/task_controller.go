@@ -48,6 +48,7 @@ func CreateTask(c *gin.Context) { // 400, 500, 200
 	err2 := services.CreateTask(task)
 
 	if err2 != nil {
+		fmt.Println(err2)
 		c.JSON(500, gin.H{"error": "internal server error"})
 		return
 	}

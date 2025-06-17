@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var DB *mongo.Client
+var MongoDB *mongo.Client
 
 func ConnectDB() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -26,10 +26,10 @@ func ConnectDB() {
 		log.Fatal("MongoDB Ping Error:", err)
 	}
 
-	DB = client
+	MongoDB = client
 	log.Println("Connected to MongoDB!")
 }
 
 func GetCollection(collectionName string) *mongo.Collection {
-	return DB.Database("toDodb").Collection(collectionName)
+	return MongoDB.Database("toDodb").Collection(collectionName)
 }

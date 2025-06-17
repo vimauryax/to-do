@@ -12,6 +12,8 @@ func main() {
 	// connect with db
 	config.ConnectDB()
 
+	config.InitializeRedis()
+
 	// creating router
 	r := gin.Default()
 
@@ -23,6 +25,5 @@ func main() {
 
 	// Start server
 	r.Run(":8080")
-
 
 }

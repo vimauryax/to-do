@@ -10,6 +10,10 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
+func InitializeDb() (string, error) {
+	return "sucessfully initialized", nil
+}
+
 func GetNextTaskId() (string, error) {
 
 	collection := config.GetCollection("counter")

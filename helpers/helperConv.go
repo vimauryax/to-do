@@ -15,7 +15,6 @@ func ConvertPayloadToTask(taskPayload models.TaskPayload) models.Task {
 	tEnd := taskPayload.TimestampEnd.In(loc).Unix()
 
 	return models.Task{
-		Task_id:        taskPayload.Task_id,
 		Title:          taskPayload.Title,
 		Desc:           taskPayload.Desc,
 		TimestampBegin: strconv.FormatInt(tBegin, 10),

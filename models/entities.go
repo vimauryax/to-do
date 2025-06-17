@@ -8,14 +8,18 @@ type User struct {
 }
 
 type Task struct {
-	Task_id        string    `json:"task_id" bson:"task_id"`
-	Title          string    `json:"title" binding:"required" bson:"title"`
-	Desc           string    `json:"desc" bson:"desc"`
+	Task_id        string `json:"task_id" bson:"task_id"`
+	Title          string `json:"title" binding:"required" bson:"title"`
+	Desc           string `json:"desc" bson:"desc"`
 	TimestampBegin string `json:"timestampBegin" binding:"required" bson:"TimestampBegin"`
 	TimestampEnd   string `json:"timestampEnd" binding:"required" bson:"timestampEnd"`
-	Status         string    `json:"status" binding:"required,oneof=pending done outdated" bson:"status"`
+	Status         string `json:"status" binding:"required,oneof=pending done outdated" bson:"status"`
 }
 
+// type Counter struct {
+// 	Name string `gorm:"primaryKey"`
+// 	Seq  int
+// }
 
 // validator one-of
 // validator pkg
