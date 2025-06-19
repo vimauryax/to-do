@@ -35,14 +35,16 @@ func CreateTask(task models.Task) error {
 	// Marshal the task to JSON before caching in Redis
 	taskJson, err3 := json.Marshal(task)
 	if err3 != nil {
+		fmt.Println("error in marshal")
 		return err3
 	}
 
 	err4 := config.RedisClient.Set(ctx, task_id, taskJson, 5*time.Minute).Err()
 	if err4 != nil {
+		fmt.Println("not inserted in redis")
 		return err4
 	}
-
+	fmt.Println("inserted in reddis")
 	return nil
 }
 
@@ -91,6 +93,12 @@ func UpdateTaskByID(taskID string, update *models.TaskUpdatePayload) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
+	err1 := config.RedisClient.Del(ctx, taskID).Err()
+	if err1 != nil {
+		fmt.Println("error in deleting redis")
+		return err1
+	}
+
 	updateFields := bson.M{}
 
 	if update.Title != nil {
@@ -122,6 +130,12 @@ func DeleteTaskByID(task_id string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 
 	defer cancel()
+
+	err1 := config.RedisClient.Del(ctx, task_id).Err()
+	if err1 != nil {
+		fmt.Println("error in deleting redis")
+		return err1
+	}
 
 	_, err := collection.DeleteOne(ctx, bson.M{"task_id": task_id})
 	return err
