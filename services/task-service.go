@@ -15,7 +15,16 @@ import (
 	//"go.mongodb.org/mongo-driver/mongo"
 )
 
-func CreateTask(task models.Task) error {
+type TaskService struct {
+}
+
+var taskService TaskService
+
+func GetTaskService() TaskService {
+	return taskService
+}
+
+func (obj TaskService) CreateTask(task models.Task) error {
 	collection := config.GetCollection("task")
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -48,7 +57,7 @@ func CreateTask(task models.Task) error {
 	return nil
 }
 
-func GetTaskById(task_id string) (*models.Task, error) {
+func (obj TaskService) GetTaskById(task_id string) (*models.Task, error) {
 	collection := config.GetCollection("task")
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 
@@ -87,7 +96,7 @@ func GetTaskById(task_id string) (*models.Task, error) {
 //		collection.
 //	}
 
-func UpdateTaskByID(taskID string, update *models.TaskUpdatePayload) error {
+func (obj TaskService) UpdateTaskByID(taskID string, update *models.TaskUpdatePayload) error {
 
 	collection := config.GetCollection("task")
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -125,7 +134,7 @@ func UpdateTaskByID(taskID string, update *models.TaskUpdatePayload) error {
 	return err
 }
 
-func DeleteTaskByID(task_id string) error {
+func (obj TaskService) DeleteTaskByID(task_id string) error {
 	collection := config.GetCollection("task")
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 

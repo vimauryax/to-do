@@ -15,6 +15,12 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+var taskServiceMongo models.TaskServiceMongo
+
+func InitSetterTaskService(taskService services.TaskService) {
+	taskServiceMongo = taskService
+}
+
 func CreateTask(c *gin.Context) { // 400, 500, 200
 	var taskPayload models.TaskPayload
 	var task models.Task
@@ -27,9 +33,9 @@ func CreateTask(c *gin.Context) { // 400, 500, 200
 	t_beg := taskPayload.TimestampBegin.In(loc).Unix()
 	t_end := taskPayload.TimestampEnd.In(loc).Unix()
 	t_now := time.Now().In(loc).Unix()
-	fmt.Println("time beg : ",t_beg)
-	fmt.Println("time end : ",t_end)
-	fmt.Println("time now : ",t_now)
+	fmt.Println("time beg : ", t_beg)
+	fmt.Println("time end : ", t_end)
+	fmt.Println("time now : ", t_now)
 
 	fmt.Println(time.Now().In(loc).Format("2006-01-02 15:04"))
 	if t_end < t_now {
@@ -44,8 +50,8 @@ func CreateTask(c *gin.Context) { // 400, 500, 200
 
 	task = helpers.ConvertPayloadToTask(taskPayload)
 
-
-	err2 := services.CreateTask(task)
+	//err2 := services.CreateTask(task)
+	err2 := taskServiceMongo.CreateTask(task)
 
 	if err2 != nil {
 		fmt.Println(err2)
@@ -64,7 +70,7 @@ func GetTaskById(c *gin.Context) { // 400, 404, 500, 200
 		return
 	}
 	//var task models.Task
-	task, err := services.GetTaskById(task_id)
+	task, err := taskServiceMongo.GetTaskById(task_id)
 
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
@@ -87,7 +93,7 @@ func UpdateTask(c *gin.Context) { // 400, 404, 500, 200
 		return
 	}
 	fmt.Println("this should work", task_id)
-	_, err1 := services.GetTaskById(task_id)
+	_, err1 := taskServiceMongo.GetTaskById(task_id)
 
 	if err1 != nil {
 		if err1 == mongo.ErrNoDocuments {
@@ -99,7 +105,7 @@ func UpdateTask(c *gin.Context) { // 400, 404, 500, 200
 		}
 	}
 
-	err := services.UpdateTaskByID(task_id, &updatePayload)
+	err := taskServiceMongo.UpdateTaskByID(task_id, &updatePayload)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
@@ -116,7 +122,7 @@ func DeleteTaskByID(c *gin.Context) {
 		return
 	}
 
-	_, err1 := services.GetTaskById(task_id)
+	_, err1 := taskServiceMongo.GetTaskById(task_id)
 	if err1 != nil {
 		if err1 == mongo.ErrNoDocuments {
 			c.JSON(404, gin.H{"error": "no record found"})
@@ -127,7 +133,7 @@ func DeleteTaskByID(c *gin.Context) {
 		}
 	}
 
-	err2 := services.DeleteTaskByID(task_id)
+	err2 := taskServiceMongo.DeleteTaskByID(task_id)
 	if err2 != nil {
 		c.JSON(500, gin.H{"error": "internal server error"})
 		return
