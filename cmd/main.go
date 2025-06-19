@@ -17,7 +17,7 @@ func main() {
 	config.InitializeRedis()
 
 	// initialize provider
-	var taskService services.TaskService
+	taskService := services.GetTaskService()
 	controller.InitSetterTaskService(taskService)
 
 	// creating router

@@ -18,9 +18,8 @@ import (
 type TaskService struct {
 }
 
-var taskService TaskService
-
 func GetTaskService() TaskService {
+	taskService := TaskService{}
 	return taskService
 }
 
