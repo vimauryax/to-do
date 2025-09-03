@@ -13,6 +13,7 @@ import (
 	"github.com/Samratakgec/to-do-go-api/services"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
+	"net/http"
 )
 
 var taskServiceMongo models.TaskServiceMongo
@@ -21,6 +22,10 @@ func InitSetterTaskService(taskService services.TaskService) {
 	taskServiceMongo = taskService
 }
 
+func test(c* gin.Context){
+	c.JSON(http.StatusOk, gin.H{"success":"you are connected"})
+	return
+}
 func CreateTask(c *gin.Context) { // 400, 500, 200
 	var taskPayload models.TaskPayload
 	var task models.Task
